@@ -1,0 +1,38 @@
+{
+  "toggle_stereo_on_off": {
+    "order": 1,
+    "onUp": "stereo_system.toggleStereoSystem()",
+    "title": "Toggle Stereo System",
+    "desc": "Toggles the stereo system on or off"
+  },
+
+  "next_track": {
+    "order": 2,
+    "onDown": "stereo_system.setNextDownTime()",
+    "onUp": "stereo_system.setNextUpTime()",
+    "title": "Next Track",
+    "desc": "Hold down to toggle on and off the stereo system or tap to play the next track"
+  },
+
+  "previous_track": {
+    "order": 3,
+    "onDown": "stereo_system.setPrevDownTime()",
+    "onUp": "stereo_system.setPrevUpTime()",
+    "title": "Previous Track",
+    "desc": "Hold down to toggle on and off shuffle mode or tap to restart the current track or play the previous one"
+  },
+
+  "toggle_shuffle_on_off": {
+    "order": 3,
+    "onUp": "stereo_system.toggleShuffleMode()",
+    "title": "Toggle Shuffle Mode",
+    "desc": "Toggles shuffle mode on or off"
+  },
+
+  "scan_for_new_tracks": {
+    "order": 4,
+    "onUp": "stereo_system.scanForTracks()",
+    "title": "Find New Tracks",
+    "desc": "Scans for tracks that have been added to the 'music' folder"
+  }
+}

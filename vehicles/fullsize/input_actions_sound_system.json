@@ -23,16 +23,16 @@
   },
 
   "toggle_shuffle_on_off": {
-    "order": 3,
+    "order": 4,
     "onUp": "stereo_system.toggleShuffleMode()",
     "title": "Toggle Shuffle Mode",
     "desc": "Toggles shuffle mode on or off"
   },
 
   "scan_for_new_tracks": {
-    "order": 4,
+    "order": 5,
     "onUp": "stereo_system.scanForTracks()",
     "title": "Find New Tracks",
-    "desc": "Scans for tracks that have been added to the 'music' folder"
+    "desc": "Scans for tracks that have been added to the music folder"
   }
 }

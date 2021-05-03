@@ -1,10 +1,11 @@
 local M = {}
 
 local speaker
-local msgDirNotExists = "Stereo: the 'music' folder doesn't exist"
+local msgDirNotExists = "Stereo: the music folder doesn't exist"
 local msgStalled = "Stereo: engine is stalled"
 local msgShorted = "Stereo: system shorted"
-local msgEmpty = "Stereo: the 'music' folder is empty"
+local msgEmpty = "Stereo: the music folder is empty"
+local msgShuffle = "Stereo: shuffle mode is on"
 local tracksFolder = "music"
 local guiActive = "active"
 local guiShuffle = "shuffle"
@@ -37,6 +38,10 @@ local shortThreshold = .9
 local engine
 local wasPlaying
 
+local fileTypes = {}
+fileTypes[".mp3"] = true
+fileTypes[".wav"] = true
+
 local function luaMod(x, mod)
 	local y = x % mod
 	if y == 0 then
@@ -62,7 +67,7 @@ end
 local function systemPlayTrack(track)
 	local name = string.sub(track.name, 8, -5)
 	gui.message("Stereo: now playing '" .. name .. "' " .. tostring(trackIndex) .. " - " .. tostring(#trackFiles), 5, guiPlaying)
-	obj:setVolume(track.sfx, 1)
+	obj:setVolume(track.sfx, 6.25)
 	obj:cutSFX(track.sfx)
 	startedTrackTime = os.time()
 	obj:playSFX(track.sfx)
@@ -92,44 +97,38 @@ local function setPrevUpTime()
 	end
 end
 
-local function appendTable(t1, t2)
-	for _, v in ipairs(t2) do
-		table.insert(t1, v)
-	end
-end
-
 local function loadCacheAndGetFiles(directory)
 	trackFiles = {}
 	if speaker ~= nil then
 		if FS:directoryExists(directory) then
 			caching = true
 			dirExists = true
-			local files = FS:findFiles(directory, "*.mp3", -1, true, false)
-			local wavFiles = FS:findFiles(directory, "*.wav", -1, true, false)
-			appendTable(files, wavFiles)
-			table.sort(files)
+			local files = FS:findFiles(directory, "*.*", -1, true, false)
 			for i, file in ipairs(files) do
-				local tr = {}
-				tr.file = file
-				tr.index = i
-				table.insert(trackFiles, tr)
+				local extension = string.lower(string.sub(file, -4))
+				if fileTypes[extension] then
+					local tr = {}
+					tr.file = file
+					tr.index = i
+					table.insert(trackFiles, tr)
+				end
 			end
-			if #files <= cacheSize then
+			if #trackFiles <= cacheSize then
 				caching = false
 			end
 			if caching then
-				cachePos = #files + 1 - halfCacheSize
+				cachePos = #trackFiles + 1 - halfCacheSize
 				for i = 1, cacheSize do
-					local index = luaMod(i - halfCacheSize, #files)
+					local index = luaMod(i - halfCacheSize, #trackFiles)
 					cachedTracks[i] = {}
 					cachedTracks[i].sfx = nil
-					cachedTracks[i].name = files[index]
+					cachedTracks[i].name = trackFiles[index].file
 				end
 			else
-				for i = 1, #files, 1 do
+				for i = 1, #trackFiles, 1 do
 					cachedTracks[i] = {}
 					cachedTracks[i].sfx = nil
-					cachedTracks[i].name = files[i]
+					cachedTracks[i].name = trackFiles[i].file
 				end
 			end
 		else
@@ -173,6 +172,9 @@ local function toggleStereoSystem()
 			local name = string.sub(cachedTracks[cacheTrackIndex()].name, 8, -5)
 			gui.message("Stereo: stopped playing '" .. name .. "'", 5, guiPlaying)
 		else
+			if shuffle then
+				gui.message(msgShuffle, 5, guiShuffle)
+			end
 			wasPlaying = true
 			delayedPlay = true
 			for _, track in ipairs(cachedTracks) do
@@ -326,12 +328,12 @@ local function scanForTracks()
 	loadCacheAndGetFiles(tracksFolder)
 	if dirExists then
 		if #trackFiles > oldNum then
-			gui.message("Stereo: scan - found new tracks in the 'music' folder", 5, guiFile)
+			gui.message("Stereo: scan - found new tracks in the music folder", 5, guiFile)
 		else
-			gui.message("Stereo: scan - nothing was added to the 'music' folder", 5, guiFile)
+			gui.message("Stereo: scan - no tracks were added to the music folder", 5, guiFile)
 		end
 	else
-		gui.message("Stereo: scan - the 'music' folder doesn't exist", 5, guiFile)
+		gui.message("Stereo: scan - the music folder doesn't exist", 5, guiFile)
 	end
 end
 
@@ -348,7 +350,7 @@ local function toggleShuffleMode()
 		shuffle = not shuffle
 		if shuffle then
 			loopedOnce = false
-			gui.message("Stereo: shuffle mode is on", 5, guiShuffle)
+			gui.message(msgShuffle, 5, guiShuffle)
 			local startInd = 1
 			if electrics.values.stereo_system_on == 1 then
 				if cacheTrackIndex() ~= 1 then
@@ -380,6 +382,9 @@ local function toggleShuffleMode()
 				cachedTracks[i].name = trackFiles[rIndex].file
 				swapElements(trackFiles, rIndex, shuffleIndex)
 				shuffleIndex = shuffleIndex + 1
+			end
+			if caching then
+				shuffleIndex = 3
 			end
 			trackIndex = 1
 			cachePos = 1
@@ -478,9 +483,15 @@ local function updateGFX(dt)
 		end
 		if engine.isStalled ~= stalled then
 			stalled = engine.isStalled
-		end
-		if stalled and electrics.values.stereo_system_on == 1 then
-			killStereoSystem()
+			if not stalled then
+				if wasPlaying then
+					toggleStereoSystem()
+				end
+			else
+				if electrics.values.stereo_system_on == 1 then
+					killStereoSystem()
+				end
+			end
 		end
 	end
 end

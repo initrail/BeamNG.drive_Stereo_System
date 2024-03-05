@@ -1,0 +1,86 @@
+{
+  "volume_down": {
+    "cat":"vehicle",
+    "ctx":"vlua",
+    "order": 1001,
+    "onDown": "StereoSystem.decreaseVolumeButtonDown()",
+    "onUp": "StereoSystem.decreaseVolumeButtonUp()",
+    "title": "Stereo System | Decrease the Volume",
+    "desc": "Decreases the volume of the currently playing track"
+  },
+  
+  "volume_up": {
+    "cat":"vehicle",
+    "ctx":"vlua",
+    "order": 1002,
+    "onDown": "StereoSystem.increaseVolumeButtonDown()",
+    "onUp": "StereoSystem.increaseVolumeButtonUp()",
+    "title": "Stereo System | Increase the Volume",
+    "desc": "Increases the volume of the currently playing track"
+  },
+  
+  "toggle_shuffle_on_off": {
+    "cat":"vehicle",
+    "ctx":"vlua",
+    "order": 1003,
+    "onDown": "StereoSystem.toggleShuffleMode()",
+    "title": "Stereo System | Toggle Shuffle Mode",
+    "desc": "Toggles shuffle mode on or off"
+  },
+  
+  "scan_for_new_tracks": {
+    "cat":"vehicle",
+    "ctx":"vlua",
+    "order": 1004,
+    "onDown": "StereoSystem.scanForTracks()",
+    "title": "Stereo System | Scan for New Tracks",
+    "desc": "Scans for new tracks that have been added to the music folder during gameplay"
+  },
+  
+  "toggle_repeat": {
+    "cat":"vehicle",
+    "ctx":"vlua",
+    "order": 1005,
+    "onDown": "StereoSystem.toggleRepeatMode()",
+    "title": "Stereo System | Toggle Repeat Mode",
+    "desc": "Toggles repeat mode between song, playlist, or off"
+  },
+  
+  "previous_track": {
+    "cat":"vehicle",
+    "ctx":"vlua",
+    "order": 1006,
+    "onDown": "StereoSystem.setPrevDownTime()",
+    "onUp": "StereoSystem.setPrevUpTime()",
+    "title": "Stereo System | Previous Track",
+    "desc": "Tap to play the previous track or restart the current one, and hold down to toggle shuffle mode on or off"
+  },
+  
+  "play_pause": {
+    "cat":"vehicle",
+    "ctx":"vlua",
+    "order": 1007,
+    "onDown": "StereoSystem.playPause(true)",
+    "title": "Stereo System | Play/Pause Current Track",
+    "desc": "Plays or pauses the current track"
+  },
+  
+  "next_track": {
+    "cat":"vehicle",
+    "ctx":"vlua",
+    "order": 1008,
+    "onDown": "StereoSystem.setNextDownTime()",
+    "onUp": "StereoSystem.setNextUpTime()",
+    "title": "Stereo System | Next Track",
+    "desc": "Tap to play the next track, and hold down to toggle the stereo system on or off"
+  },
+  
+  "toggle_stereo_on_off": {
+    "cat":"vehicle",
+    "ctx":"vlua",
+    "order": 1009,
+    "onDown": "StereoSystem.toggleStereoSystem()",
+    "title": "Stereo System | Toggle Stereo System",
+    "desc": "Toggles the stereo system on or off"
+  }
+}

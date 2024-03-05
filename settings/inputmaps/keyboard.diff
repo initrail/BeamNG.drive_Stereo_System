@@ -1,0 +1,45 @@
+{
+"version":1,
+"vidpid":"6F1D2B61",
+"devicetype":"keyboard",
+"guid":"{6F1D2B61-D5A0-11CF-BFC7-444553540000}",
+"name":"Keyboard",
+  "bindings": [
+    {
+      "control": "-",
+      "action": "volume_down"
+    },
+    {
+      "control": "=",
+      "action": "volume_up"
+    },
+    {
+      "control": "[",
+      "action": "toggle_shuffle_on_off"
+    },
+    {
+      "control": "]",
+      "action": "scan_for_new_tracks"
+    },
+    {
+      "control": "backslash",
+      "action": "toggle_repeat"
+    },
+    {
+      "action": "previous_track",
+      "control": "l"
+    },
+    {
+      "control": ";",
+      "action": "play_pause"
+    },
+    {
+      "control": "apostrophe",
+      "action": "next_track"
+    },
+    {
+      "control": "return",
+      "action": "toggle_stereo_on_off"
+    }
+  ]
+}
